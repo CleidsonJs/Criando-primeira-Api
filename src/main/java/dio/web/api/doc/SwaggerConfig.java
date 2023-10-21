@@ -3,6 +3,7 @@ package dio.web.api.doc;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import io.swagger.annotations.SwaggerDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,5 +38,20 @@ public class SwaggerConfig {
 
         return apiInfoBuilder;
     }
-    
+    @Bean
+    public Docket detalheApi() {
+        Docket docket = new Docket(DocumentationType.SWAGGER_2);
+
+        docket
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("dio.web.api.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(this.informacoesApi().build())
+                .consumes(new HashSet<String>(Arrays.asList("application/json")))
+                .produces(new HashSet<String>(Arrays.asList("application/json")));
+
+        return docket;
+    }
+
 }
